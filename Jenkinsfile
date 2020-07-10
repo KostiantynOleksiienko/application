@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "kote/my-application"
+    registry = "176065828214.dkr.ecr.us-east-1.amazonaws.com/my_application"
     dockerImage = ''
   }
   agent any
@@ -8,11 +8,11 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          dockerImage = docker.build registry + ":latest"
         }
       }
     }
-    stage('Build') {
+    stage('Docker login') {
       steps {
         sh '$(aws --region us-east-1 ecr get-login --no-include-email)'
       }
@@ -28,7 +28,7 @@ pipeline {
     }
     stage('Remove Unused docker image') {
       steps{
-        sh "docker rmi $registry:$BUILD_NUMBER"
+        sh "docker rmi $registry:latest"
       }
     }
   }

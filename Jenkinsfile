@@ -12,5 +12,14 @@ pipeline {
         }
       }
     }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry("https://176065828214.dkr.ecr.us-east-1.amazonaws.com/my_application") {
+            dockerImage.push()
+          }
+        }
+      }
+    }
   }
 }

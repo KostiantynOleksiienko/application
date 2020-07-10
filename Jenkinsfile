@@ -12,6 +12,11 @@ pipeline {
         }
       }
     }
+    stage('Build') {
+      steps {
+        sh '$(aws --region us-east-1 ecr get-login --no-include-email)'
+      }
+    }
     stage('Deploy Image') {
       steps{
         script {
